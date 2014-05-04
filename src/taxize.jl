@@ -32,15 +32,15 @@ module Taxize
     return replace(replace(dat, "\r", ""), "\n", "")
   end
 
-  """
-  Uses the Global Names Index to parse scientific names
-
-  :param names: List of scientific names.
-
-  Usage:
-  Taxize.gni_parse(names = ("Cyanistes caeruleus","Helianthus annuus"))
-  """
   function gni_parse(names)
+    """
+    Uses the Global Names Index to parse scientific names
+
+    :param names: List of scientific names.
+
+    Usage:
+    Taxize.gni_parse(names = ("Cyanistes caeruleus","Helianthus annuus"))
+    """
     url = "http://gni.globalnames.org/parsers.json"
     names = join(names, "|")
     out = Requests.get(url; query = {"names" => names})
