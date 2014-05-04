@@ -27,11 +27,7 @@ module Taxize
     url = "http://www.itis.gov/ITISWebService/services/ITISService/getTaxonomicRankNameFromTSN"
     payload = {"tsn" => tsn}
     out = Requests.get(url; query = payload)
-
-    if out.status > 200
-      @sprintf("Call error, http status code: %s", out.status)
-    end
-
+    check_status(out)
     dat = out.data
     return replace(replace(dat, "\r", ""), "\n", "")
   end
@@ -48,10 +44,14 @@ module Taxize
     url = "http://gni.globalnames.org/parsers.json"
     names = join(names, "|")
     out = Requests.get(url; query = {"names" => names})
-    if out.status > 200
-      @sprintf("Call error, http status code: %s", out.status)
-    end
+    check_status(out)
     return out.data
+  end
+
+  function check_status(response_obj)
+    if response_obj.status > 200
+      @sprintf("Call error, http status code: %s", response_obj.status)
+    end
   end
 
 end
